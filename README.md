@@ -1,4 +1,4 @@
-# espARPsp32ARP
+# espARP32ARP
 
 A ESP32 library designed to interacting directly with the lwIP stack's ARP functionality. This library provide users with an easy-to-use interface that abstracts the complexities of ARP messaging on an ESP32 platform.
 
