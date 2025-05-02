@@ -28,7 +28,7 @@ inline int esp32ARP::etharpFindAddrHandler_(const ip4_addr_t *target_ip, uint8_t
 
 /* ===== PUBLIC ===== */
 
-espARP::esp32ARP() {
+esp32ARP::esp32ARP() {
   esp_netif_ = esp_netif_get_handle_from_ifkey("WIFI_STA_DEF");
   if(esp_netif_ == nullptr) {
     Serial.println("Can't get esp_netif");

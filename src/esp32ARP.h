@@ -1,5 +1,5 @@
-#ifndef ESPARP_H
-#define ESPARP_H
+#ifndef ESP32ARP_H
+#define ESP32ARP_H
 
 #include "Arduino.h"
 #include "esp_netif.h"
