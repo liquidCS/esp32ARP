@@ -28,16 +28,20 @@ inline int esp32ARP::etharpFindAddrHandler_(const ip4_addr_t *target_ip, uint8_t
 
 /* ===== PUBLIC ===== */
 
-esp32ARP::esp32ARP() {
+int esp32ARP::init() {
   esp_netif_ = esp_netif_get_handle_from_ifkey("WIFI_STA_DEF");
   if(esp_netif_ == nullptr) {
-    Serial.println("Can't get esp_netif");
+    Serial.println("Can't get esp_netif. Please make sure WiFi is properly connected and initialized");
+    return 0;
   }
 
   netif_ = (struct netif *)esp_netif_get_netif_impl(esp_netif_);
   if(netif_ == nullptr) {
     Serial.println("Can't get netif");
+    return 0;
   }
+
+  return 1;
 }
 
 /* Send ARP request */ 
@@ -61,6 +65,11 @@ int esp32ARP::sendRequest(String sting_target_ip) {
   return 1;
 }
 
+int esp32ARP::sendRequest(uint32_t uint32_target_ip) {
+  ip4_addr_t target_ip = {uint32_target_ip};
+  etharpRequestHandler_(&target_ip);
+  return 1;
+}
 
 /* Find entrie from ARP table */
 int esp32ARP::lookupEntry(char cstring_target_ip[], uint8_t mac_addr[6]) {
@@ -81,4 +90,21 @@ int esp32ARP::lookupEntry(String string_target_ip, uint8_t mac_addr[6]) {
   }
   etharpFindAddrHandler_(&target_ip, mac_addr);
   return 1;
+}
+
+int esp32ARP::lookupEntry(uint32_t uint32_target_ip, uint8_t mac_addr[6]) {
+  ip4_addr_t target_ip = {uint32_target_ip};
+  etharpFindAddrHandler_(&target_ip, mac_addr);
+  return 1;
+}
+
+
+/* ===== Useful functions ===== */
+
+void printMacAddr(uint8_t mac_addr[6]) {
+  Serial.printf("%02X:%02X:%02X:%02X:%02X:%02X", mac_addr[0], mac_addr[1], mac_addr[2], mac_addr[3], mac_addr[4], mac_addr[5]);
+}
+
+void printlnMacAddr(uint8_t mac_addr[6]) {
+  Serial.printf("%02X:%02X:%02X:%02X:%02X:%02X\n", mac_addr[0], mac_addr[1], mac_addr[2], mac_addr[3], mac_addr[4], mac_addr[5]);
 }
