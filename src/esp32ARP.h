@@ -11,6 +11,13 @@
 #include <cstring>
 #include <cstdint>
 
+// Storing Mac address
+struct mac_addr {
+    uint8_t addr[6]; 
+};
+typedef mac_addr mac_addr_t;
+
+
 class esp32ARP {
 private:
   esp_netif_t *esp_netif_;
@@ -26,20 +33,20 @@ public:
   int init();
 
   /* Broadcast ARP package to look for certain IP */
-  int sendRequest(char cstring_target_ip[]);
-  int sendRequest(String sting_target_ip);
-  int sendRequest(uint32_t uint32_target_ip);
+  int sendRequest(const char cstring_target_ip[]);
+  int sendRequest(const String sting_target_ip);
+  int sendRequest(const uint32_t uint32_target_ip);
 
   /* Find entrie from ARP table */
-  int lookupEntry(char cstring_target_ip[], uint8_t mac_addr[6]);
-  int lookupEntry(String string_target_ip, uint8_t mac_addr[6]);
-  int lookupEntry(uint32_t uint32_target_ip, uint8_t mac_addr[6]);
+  int lookupEntry(const char cstring_target_ip[], mac_addr_t &mac_addr);
+  int lookupEntry(const String string_target_ip, mac_addr_t &mac_addr);
+  int lookupEntry(const uint32_t uint32_target_ip, mac_addr_t &mac_addr);
 
 };
 
 
 /* Print MAC address */
-void printMacAddr(uint8_t mac_addr[6]);
-void printlnMacAddr(uint8_t mac_addr[6]);
+void printMacAddr(const mac_addr_t &mac_addr);
+void printlnMacAddr(const mac_addr &mac_addr);
 
 #endif

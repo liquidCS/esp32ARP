@@ -21,7 +21,7 @@ void loop() {
   arp.sendRequest(WiFi.gatewayIP()); // Broadcast ARP requst for the gateway IP
   delay(1000);  // Wait 1 second for gateway to respond
   
-  uint8_t mac[6];
+  mac_addr_t mac;
   arp.lookupEntry(WiFi.gatewayIP(), mac); // Check ARP table for respond
   printlnMacAddr(mac); // Print out the MAC address of the gateway
 }

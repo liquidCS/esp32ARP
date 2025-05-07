@@ -30,7 +30,7 @@ void loop() {
   arp.sendRequest(WiFi.gatewayIP()); // Broadcast ARP requst for the gateway IP
   delay(1000);  // Wait 1 second for gateway to respond
   
-  uint8_t mac[6];
+  mac_addr_t mac;
   arp.lookupEntry(WiFi.gatewayIP(), mac); // Check ARP table for respond
   printlnMacAddr(mac); // Print out the MAC address of the gateway
 }
@@ -59,7 +59,7 @@ arp.sendRequest(target_ip);
 ### Lookup ARP table entry
 Check ARP table entry to see if the device on the IP has responded.
 ``` cpp
-uint8_t mac1[6], mac2[6];
+mac_addr_t mac1, mac2;
 
 // Pass lookup IP using c-string
 arp.lookupEntry("192.168.1.1", mac1);
@@ -67,4 +67,12 @@ arp.lookupEntry("192.168.1.1", mac1);
 // Pass lookup Ip using String
 String lookup_ip = "192.168.1.34";
 arp.lookupEntry(lookup_ip, mac2);     
+```
+## Data Type
+### mac_addr_t
+``` cpp
+struct mac_addr {
+  uint8_t addr[8]
+};
+typedef mac_addr mac_addr_t;
 ```

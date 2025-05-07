@@ -45,7 +45,7 @@ int esp32ARP::init() {
 }
 
 /* Send ARP request */ 
-int esp32ARP::sendRequest(char cstring_target_ip[]) {
+int esp32ARP::sendRequest(const char cstring_target_ip[]) {
   ip4_addr_t target_ip;
   if(!ip4addr_aton(cstring_target_ip, &target_ip)) {
     Serial.println("Error: Invalid target IP address.");
@@ -55,7 +55,7 @@ int esp32ARP::sendRequest(char cstring_target_ip[]) {
   return 1;
 }
 
-int esp32ARP::sendRequest(String sting_target_ip) {
+int esp32ARP::sendRequest(const String sting_target_ip) {
   ip4_addr_t target_ip;
   if(!ip4addr_aton(sting_target_ip.c_str(), &target_ip)) {
     Serial.println("Error: Invalid target IP address.");
@@ -65,46 +65,46 @@ int esp32ARP::sendRequest(String sting_target_ip) {
   return 1;
 }
 
-int esp32ARP::sendRequest(uint32_t uint32_target_ip) {
+int esp32ARP::sendRequest(const uint32_t uint32_target_ip) {
   ip4_addr_t target_ip = {uint32_target_ip};
   etharpRequestHandler_(&target_ip);
   return 1;
 }
 
 /* Find entrie from ARP table */
-int esp32ARP::lookupEntry(char cstring_target_ip[], uint8_t mac_addr[6]) {
+int esp32ARP::lookupEntry(const char cstring_target_ip[], mac_addr_t &mac_addr) {
   ip4_addr_t target_ip;
   if(!ip4addr_aton(cstring_target_ip, &target_ip)) {
     Serial.println("Error: Invalid target IP address.");
     return 0;
   }
-  etharpFindAddrHandler_(&target_ip, mac_addr);
+  etharpFindAddrHandler_(&target_ip, mac_addr.addr);
   return 1;
 }
 
-int esp32ARP::lookupEntry(String string_target_ip, uint8_t mac_addr[6]) {
+int esp32ARP::lookupEntry(const String string_target_ip, mac_addr_t &mac_addr) {
   ip4_addr_t target_ip;
   if(!ip4addr_aton(string_target_ip.c_str(), &target_ip)) {
     Serial.println("Error: Invalid target IP address.");
     return 0;
   }
-  etharpFindAddrHandler_(&target_ip, mac_addr);
+  etharpFindAddrHandler_(&target_ip, mac_addr.addr);
   return 1;
 }
 
-int esp32ARP::lookupEntry(uint32_t uint32_target_ip, uint8_t mac_addr[6]) {
+int esp32ARP::lookupEntry(const uint32_t uint32_target_ip, mac_addr_t &mac_addr) {
   ip4_addr_t target_ip = {uint32_target_ip};
-  etharpFindAddrHandler_(&target_ip, mac_addr);
+  etharpFindAddrHandler_(&target_ip, mac_addr.addr);
   return 1;
 }
 
 
 /* ===== Useful functions ===== */
 
-void printMacAddr(uint8_t mac_addr[6]) {
-  Serial.printf("%02X:%02X:%02X:%02X:%02X:%02X", mac_addr[0], mac_addr[1], mac_addr[2], mac_addr[3], mac_addr[4], mac_addr[5]);
+void printMacAddr(const mac_addr_t &mac_addr) {
+  Serial.printf("%02X:%02X:%02X:%02X:%02X:%02X", mac_addr.addr[0], mac_addr.addr[1], mac_addr.addr[2], mac_addr.addr[3], mac_addr.addr[4], mac_addr.addr[5]);
 }
 
-void printlnMacAddr(uint8_t mac_addr[6]) {
-  Serial.printf("%02X:%02X:%02X:%02X:%02X:%02X\n", mac_addr[0], mac_addr[1], mac_addr[2], mac_addr[3], mac_addr[4], mac_addr[5]);
+void printlnMacAddr(const mac_addr_t &mac_addr) {
+  Serial.printf("%02X:%02X:%02X:%02X:%02X:%02X\n", mac_addr.addr[0], mac_addr.addr[1], mac_addr.addr[2], mac_addr.addr[3], mac_addr.addr[4], mac_addr.addr[5]);
 }
