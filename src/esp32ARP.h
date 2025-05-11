@@ -24,7 +24,7 @@ private:
   struct netif *netif_;
 
   /* Requesting ARP package to send to lwip */
-  inline void etharpRequestHandler_(const ip4_addr_t *target_ip);
+  inline int etharpRequestHandler_(const ip4_addr_t *target_ip);
   /* Find IP entrie from ARP table */
   inline int etharpFindAddrHandler_(const ip4_addr_t *target_ip, uint8_t *mac_addr = nullptr);
 
