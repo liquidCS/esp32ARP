@@ -3,6 +3,10 @@
 /* ===== PRIVATE ===== */
 
 inline int esp32ARP::etharpRequestHandler_(const ip4_addr_t *target_ip) {
+  if(netif_ == nullptr) { // Check if netif_is initialized  
+    Serial.println("Error: netif not found. Please call .init()");
+    return ERR_VAL; 
+  }
   LOCK_TCPIP_CORE();
   int request_status = etharp_request(netif_, target_ip);
   UNLOCK_TCPIP_CORE();
@@ -10,6 +14,10 @@ inline int esp32ARP::etharpRequestHandler_(const ip4_addr_t *target_ip) {
 } 
 
 inline int esp32ARP::etharpFindAddrHandler_(const ip4_addr_t *target_ip, uint8_t *mac_addr) {
+  if(netif_ == nullptr){ // Check if netif_ is initialized
+    Serial.println("Error: netif not found. Please call .init()");
+    return ERR_VAL; 
+  }
   const ip4_addr_t *ipaddr_ret;
   struct eth_addr *eth_ret;
 
